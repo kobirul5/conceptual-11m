@@ -2,12 +2,15 @@ import { useContext, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { AuthContext } from '../providers/AuthProvider'
-
+import axios from 'axios';
+import {toast} from "react-hot-toast"
+import { useNavigate } from 'react-router-dom';
 const AddJob = () => {
   const {user} = useContext(AuthContext)
   const [startDate, setStartDate] = useState(new Date())
+  const navigate = useNavigate()
 
-  const handleAddJob = (e) => {
+  const handleAddJob = async (e) => {
     e.preventDefault()
     const form = e.target
     const job_title = form.job_title.value
@@ -21,9 +24,21 @@ const AddJob = () => {
       name: user?.displayName,
       photo: user?.photoURL
     }
-    const formData = {job_title, email,buyer, category, deadline, min_price, max_price, description}
+    const formData = {job_title, email,buyer, category, deadline, min_price, max_price, description, bid_count: 0}
+    // ADD JOBS
+    try{
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/add-job`, 
+        formData)
+        form.reset( )
+        toast.success("data added successfully")
+        navigate("/my-posted-jobs")
+    }
+    catch(error){
+      toast.error(error.massage)
+    }
 
-    console.log(formData)
+
   }
   return (
     <div className='flex justify-center items-center min-h-[calc(100vh-306px)] my-12'>
