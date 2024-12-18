@@ -1,10 +1,30 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
+import { AuthContext } from '../providers/AuthProvider'
 
 const AddJob = () => {
+  const {user} = useContext(AuthContext)
   const [startDate, setStartDate] = useState(new Date())
 
+  const handleAddJob = (e) => {
+    e.preventDefault()
+    const form = e.target
+    const job_title = form.job_title.value
+    const email = form.email.value
+    const category = form.category.value
+    const deadline = startDate
+    const min_price = form.min_price.value
+    const max_price = form.max_price.value
+    const description = form.description.value
+    const buyer = {email,
+      name: user?.displayName,
+      photo: user?.photoURL
+    }
+    const formData = {job_title, email,buyer, category, deadline, min_price, max_price, description}
+
+    console.log(formData)
+  }
   return (
     <div className='flex justify-center items-center min-h-[calc(100vh-306px)] my-12'>
       <section className=' p-2 md:p-6 mx-auto bg-white rounded-md shadow-md '>
@@ -12,7 +32,7 @@ const AddJob = () => {
           Post a Job
         </h2>
 
-        <form>
+        <form onSubmit={handleAddJob}>
           <div className='grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2'>
             <div>
               <label className='text-gray-700 ' htmlFor='job_title'>
@@ -34,6 +54,8 @@ const AddJob = () => {
                 id='emailAddress'
                 type='email'
                 name='email'
+                value={user?.email}
+                readOnly
                 className='block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md  focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring'
               />
             </div>
