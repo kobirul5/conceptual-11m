@@ -53,7 +53,7 @@ const MyPostedJobs = () => {
         <h2 className='text-lg font-medium text-gray-800 '>My Posted Jobs</h2>
 
         <span className='px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full '>
-          4 Job
+          {jobs.length} Job
         </span>
       </div>
 
@@ -155,7 +155,7 @@ const MyPostedJobs = () => {
                             </button>
 
                             <Link
-                              to={`/update/1`}
+                              to={`/update/${job._id}`}
                               className='text-gray-500 transition-colors duration-200   hover:text-yellow-500 focus:outline-none'
                             >
                               <svg
